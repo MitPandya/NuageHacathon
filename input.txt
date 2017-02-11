@@ -1,0 +1,6 @@
+x = 100
+A(x) + B(x) + C(x)
+(B(x) * C(x)) + (D(x) * E(x))
+A( C(x) * E(x) )
+E( B( A(x) ) )
+D( A( E(x) + D(x) ) )
