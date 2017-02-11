@@ -1,4 +1,3 @@
-
 import java.io.BufferedReader;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
@@ -18,20 +17,10 @@ import java.util.regex.Pattern;
 public class Client {
 
 	/**
-	 * Runs the client as an application.  First it displays a dialog
-	 * box asking for the IP address or hostname of a host running
-	 * the date server, then connects to it and displays the date that
-	 * it serves.
+	 * Runs the client as an application. 
 	 */
 	public static void main(String[] args) throws IOException {
-		/*Socket s = new Socket("localhost", 8086);
-		DataOutput out = new DataOutputStream(s.getOutputStream());
-		out.writeUTF("5.2");
-		System.out.println("here");
-		BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
-		String answer = input.readLine();
-		System.out.println(answer);
-		System.exit(0);*/
+		
 		System.out.println(parseInputFile());
 		
 	}
@@ -59,41 +48,42 @@ public class Client {
 		}
 	}
 	static String parseFunction(int x, String function){
-		Stack ops = new Stack(20);
-		Stack cat = new Stack(20);
 		Stack results = new Stack(20);
-		results.push(x);
-		char[] fn = function.toCharArray();
-		for (int i = 0; i < fn.length; i++) {
-			if(fn[i] == '('){
-				// DO nothing
+		Stack ops = new Stack(20);
+		Stack expr = new Stack(20);
+		char[] ch = function.toCharArray();
+		for (int i = 0; i < ch.length; i++) {
+			if(ch[i] == '('){
+				
 			}
-			else if (fn[i] == '+' || fn[i] == '*' || fn[i] == '-' || fn[i] == '/') {
-				ops.push(fn[i]);
+			else if (ch[i] == '+' || ch[i] == '*'){
+				expr.push(ch[i]);
 			}
-			else if (fn[i] == 'A' || fn[i] == 'B' || fn[i] == 'C'
-					|| fn[i] == 'D' || fn[i] == 'E'){
-				cat.push(fn[i]);
+			else if(ch[i] == ')'){
+				if(expr.isEmpty())
+					continue;
+				char o = (char) expr.pop();
+				if(o == '+'){
+					x = (Integer) results.pop() + (Integer) results.pop();
+					results.push(x);
+				}
+				else if(o == '*'){
+					x = (Integer) results.pop() * (Integer) results.pop();
+					results.push(x);
+				}
 			}
-			else if (fn[i] == ')'){
-				getResult((char) cat.pop(), (int) results.pop());
+			else if (ch[i] == 'A' || ch[i] == 'B' || ch[i] == 'C' || ch[i] == 'D' || ch[i] == 'E'){
+				ops.push(ch[i]);
+			}
+			else if(ch[i] == 'x'){
+				char c = (char) ops.pop();
+				int res = getResult(c,x);
+				results.push(res);
 			}
 		}
-		return null;
+		return results.pop().toString();
 	}
-	static void doOperation(Stack ops, Stack cat, Stack results){
-		String op = cat.pop().toString();
-		if (op.equals("+")) {
-			double d1 = getResult((char) ops.pop(),(double) results.pop());
-			double d2 = getResult((char) ops.pop(),(double) results.pop());
-			results.push(d1+d2);
-		} else if (op.equals("*")) {
-			double d1 = getResult((char) ops.pop(),(double) results.pop());
-			double d2 = getResult((char) ops.pop(),(double) results.pop());
-			results.push(d1*d2);
-		}
-	}
-	static double getResult(char operation, double val){
+	static int getResult(char operation, double val){
 		double res = 0.0;
 		int port;
 		switch (operation) {
@@ -121,7 +111,7 @@ public class Client {
 		default:
 			break;
 		}
-		return res;
+		return (int) res;
 	}
 	static double getResultFromServer(Double val, int port){
 		try{
