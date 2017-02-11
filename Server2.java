@@ -4,17 +4,12 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * A TCP server that runs on port 9090.  When a client connects, it
- * sends the client the current date and time, then closes the
- * connection with that client.  Arguably just about the simplest
- * server you can write.
- */
+
 public class Server2 implements MainServer{
 	// A server dedicated to return Squared value of input number.
 	final static int PORT = 8087;
 	public static void main(String[] args) throws IOException{
-		Server1 server = new Server1();
+		Server2 server = new Server1();
 		server.runServer(PORT);
 	}
 
