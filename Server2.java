@@ -9,7 +9,7 @@ public class Server2 implements MainServer{
 	// A server dedicated to return Squared value of input number.
 	final static int PORT = 8087;
 	public static void main(String[] args) throws IOException{
-		Server2 server = new Server1();
+		Server2 server = new Server2();
 		server.runServer(PORT);
 	}
 
