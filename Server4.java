@@ -14,7 +14,7 @@ public class Server4 implements MainServer{
 	// A server dedicated to return Squared value of input number.
 	final static int PORT = 8089;
 	public static void main(String[] args) throws IOException{
-		Server1 server = new Server1();
+		Server4 server = new Server4();
 		server.runServer(PORT);
 	}
 
